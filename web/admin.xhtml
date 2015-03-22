@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Administrator Interface</title>
+        <link rel="shortcut icon" href="resources/raw/gnome-icon.png" />
+
+    </h:head>
+    <h:body>
+        <h:form id="adminform" style="margin-bottom:50px;padding-right: 150px;padding-left: 150px">
+            <p:growl id="msgs" showDetail="true"/>
+            <p:outputLabel style="text-decoration-color: white">You are logged in as admin, #{loginManager.current.username}!  <p:commandLink value="logout?" action="#{loginManager.logout}" /> </p:outputLabel>
+            <p:dataTable var="gnome" value="#{gnomeManager.gnomes}" editable="true" 
+                         rowKey="#{gnome.id}" style="padding-left: 40px;padding-right: 40px;padding-bottom: 80px;padding-top: 80px;">
+                <f:facet name="header">
+                    Inventory
+                </f:facet>
+
+                <p:ajax event="rowEdit" listener="#{adminManager.onRowEdit}" update=":adminform:msgs" />
+                <p:ajax event="rowEditCancel" listener="#{adminManager.onRowCancel}" update=":adminform:msgs" />
+
+                <p:column headerText="Id">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{gnome.id}" /></f:facet>
+                        <f:facet name="input"><p:inputText id="modelInput1" value="#{gnome.id}" style="width:100%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Name">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{gnome.name}" /></f:facet>
+                        <f:facet name="input"><p:inputText id="modelInput2" value="#{gnome.name}" style="width:100%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Price">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{gnome.price}" /></f:facet>
+                        <f:facet name="input"><p:inputText id="modelInput3" value="#{gnome.price}" style="width:100%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Quantity">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{gnome.quantity}" /></f:facet>
+                        <f:facet name="input"><p:inputText id="modelInput4" value="#{gnome.quantity}" style="width:100%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column headerText="Status">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{gnome.status}" /></f:facet>
+                        <f:facet name="input"><p:inputText id="modelInput5" value="#{gnome.status}" style="width:100%"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+
+                <p:column style="width:32px">
+                    <p:rowEditor />
+                </p:column>
+                <f:facet name="footer">
+                    <p:commandButton  icon="ui-icon-plusthick" value="Add new" onclick="PF('dlg1').show();" />
+                </f:facet>
+            </p:dataTable>
+        </h:form>
+        <h:form id="form2" style="margin-bottom:50px;padding-right: 150px;padding-left: 150px">
+            <p:growl id="msgs2" showDetail="true"/>
+            <p:dataTable var="user" value="#{adminManager.users}" editable="true" 
+                         rowKey="#{user.id}" style="padding-left: 40px;padding-right: 40px;padding-bottom: 80px;padding-top: 80px;">
+                <f:facet name="header">
+                    Users
+                </f:facet>
+
+                <p:column headerText="Id">
+                    <h:outputText value="#{user.id}" />
+                </p:column>
+
+                <p:column headerText="Username">
+                    <h:outputText value="#{user.username}" />
+                </p:column>
+
+                <p:column headerText="Email">
+                    <h:outputText value="#{user.email}" />
+                </p:column>
+
+                <p:column headerText="Role">
+                    <h:outputText value="#{user.shopRole}" />
+                </p:column>
+                <p:column headerText="Ban" >
+                    <p:commandButton icon="ui-icon-locked" action="#{adminManager.banUser}" update=":form2" value="Ban" rendered="#{user.shopRole!='banned'}">
+                        <f:setPropertyActionListener value="#{user}" target="#{adminManager.selectedUser}"  />
+                    </p:commandButton>
+                    <p:commandButton icon="ui-icon-notice" action="#{adminManager.unbanUser}" update=":form2" value="UnBan" rendered="#{user.shopRole=='banned'}">
+                        <f:setPropertyActionListener value="#{user}" target="#{adminManager.selectedUser}"  />
+                    </p:commandButton>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+        <p:dialog header="Basic Dialog" widgetVar="dlg1" minHeight="40">
+            <h:form id="form" style="margin-bottom:50px;padding-right: 120px;padding-left: 120px" >
+                <p:panelGrid columns="2" style="margin-top: 100px;" >
+                    <f:facet name="header">
+                        New Gnome
+                    </f:facet>
+
+                    <p:outputLabel  for="gnomeName" value="Gnome name: " />
+                    <p:inputText id="gnomeName" value="#{adminManager.newGnome.name}" required="true"/>
+
+                    <p:outputLabel  for="gnomePrice" value="Price: "/>
+                    <p:inputText id="gnomePrice" value="#{adminManager.newGnome.price}" required="true"/>
+
+                    <p:outputLabel  for="gnomeRole" value="Quantity: "/>
+                    <p:inputText id="gnomeRole" value="#{adminManager.newGnome.quantity}" required="true"/>
+
+                </p:panelGrid>
+                <p:toolbar id="tool" style="margin-bottom:10px;padding-right: 150px">
+                    <f:facet name="right" >
+                        <p:commandButton value="Add" action="#{adminManager.addNewGnome}"  style="margin-right:20px;" update=":adminform" />
+                    </f:facet>
+                </p:toolbar>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
+ 

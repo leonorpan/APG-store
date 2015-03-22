@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Welcome to our APG web-store. </title>
+        <style>
+            .Bimage{background-image:url("resources/raw/gnomes-lol.png");}
+        </style>
+                <link rel="shortcut icon" href="resources/raw/gnome-icon.png" />
+
+    </h:head>
+    <h:body styleClass="Bimage">
+        <h:form style="margin-bottom:50px;padding-right: 150px;padding-left: 150px">
+                        <p:growl id="growl" showDetail="true" sticky="true" />
+            <p:panel id="panel" header="Please log in" style="margin-bottom:10px;padding-top: 100px">
+                <p:messages id="messages" />
+                <h:panelGrid columns="3" cellpadding="5">
+                    <p:outputLabel for="username" value="Username:" />
+                    <p:inputText id="username" value="#{loginManager.username}" required="true" label="username">
+                        <f:validateLength minimum="2" />
+                    </p:inputText>
+                    <p:message for="username" />
+                    <p:outputLabel for="pass" value="Password:" />
+                    <p:password id="pass" value="#{loginManager.pass}" required="true" label="pass"/>
+                    <p:message for="pass" />
+                </h:panelGrid>
+            </p:panel>
+            <p:toolbar id="tool" style="margin-bottom:10px;padding-right: 150px">
+                <f:facet name="right" >
+                    <p:commandButton value="Log in" action="#{loginManager.checkCredentials}" update="growl" style="margin-right:20px;" />
+                    <h:outputLink value="register.xhtml" >Register</h:outputLink>
+                </f:facet>
+            </p:toolbar>
+            
+        </h:form>
+    </h:body>
+</html>
+

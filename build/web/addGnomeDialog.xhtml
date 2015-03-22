@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+     
+    <h:head>
+        <title>New Gnome</title>
+                <style type="text/css">
+            .ui-widget {
+                font-size: 90%;
+            }
+        </style>
+    </h:head>
+     
+    <h:body>
+         <h:form id="form" style="margin-bottom:50px;padding-right: 120px;padding-left: 120px" >
+            <p:panelGrid columns="2" style="margin-top: 100px;" >
+                <f:facet name="header">
+                    New Gnome
+                </f:facet>
+
+                <p:outputLabel  for="gnomeName" value="Gnome name: " />
+                <p:inputText id="gnomeName" value="#{adminManager.newGnome.name}" required="true"/>
+
+                <p:outputLabel  for="gnomePrice" value="Price: "/>
+                <p:inputText id="gnomePrice" value="#{adminManager.newGnome.price}" required="true"/>
+
+                <p:outputLabel  for="gnomeQuantity" value="Quantity: "/>
+                <p:inputText id="gnomeRole" value="#{adminManager.newGnome.quantity}" required="true"/>
+                
+            </p:panelGrid>
+             <p:toolbar id="tool" style="margin-bottom:10px;padding-right: 150px">
+                <f:facet name="right" >
+                    <p:commandButton value="Log in" action="#{adminManager.addNewGnome}"  style="margin-right:20px;" />
+            </p:toolbar>
+        </h:form>
+    </h:body>
+     
+</html>

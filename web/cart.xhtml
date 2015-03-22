@@ -1,0 +1,69 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html" 
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+
+        <title >APG Shop</title>
+        <style>
+            .Bimage{background-image:url("resources/raw/gnomes-lol.png");}
+        </style>
+        <link rel="shortcut icon" href="resources/raw/gnome-icon.png" />
+    </h:head>
+    <h:body styleClass="Bimage">
+        <h:form>
+        <p:menubar>
+            <p:menuitem value="Store" url="mainpage.xhtml" icon="ui-icon-home"/>
+            <p:menuitem value="Profile" url="profile.xhtml" icon="ui-icon-person"/>
+            <p:menuitem value="Cart" url="cart.xhtml" icon="ui-icon-cart"/>
+            <p:menuitem value="Buys" url="#" />
+            <f:facet name="options">
+                <p:outputLabel style="margin-right: 20px; ">This is your shopping cart, #{loginManager.current.username}!     </p:outputLabel>
+                <p:commandButton  value="Logout" icon="ui-icon-extlink" action="#{loginManager.logout}" update=":form:msgs"/>
+        </f:facet>
+        </p:menubar>
+        </h:form>
+        <h:form id="form" style="margin-bottom:50px;padding-right: 120px;padding-left: 120px">
+            
+            <p:growl id="msgs" showDetail="true"/>
+            <p:dataTable id="table" var="item" value="#{cartManager.user.cart}" rowKey="#{item.id}"
+                         style="padding-left: 40px;padding-right: 40px;padding-bottom: 80px;padding-top: 80px;" editable="true" editMode="cell">
+                <p:ajax event="cellEdit" listener="#{cartManager.onCellEdit}"  update=":form:msgs"/>
+                <f:facet name="header">
+                    Cart
+                </f:facet>
+                <p:column headerText="Id" sortBy="#{item.id}">
+                    <h:outputText value="#{item.id}"  />
+                </p:column>
+
+                <p:column headerText="Name">
+                    <h:outputText value="#{item.name}" />
+                </p:column>
+
+                <p:column headerText="Price" >
+                    <h:outputText value="#{item.price}" />
+                </p:column>
+                <p:column headerText="Quantity">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{item.shopQuantity}" /></f:facet>
+                        <f:facet name="input"><p:inputText value="#{cartManager.q}" style="width:96%" label="quantity" maxlength="2" type="Number"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+                <p:column headerText="Remove">
+                    <p:commandButton icon="ui-icon-trash" action="#{cartManager.removeItem}" update=":form" >
+                        <f:setPropertyActionListener value="#{item}" target="#{cartManager.selectedItem}"  />
+                    </p:commandButton>
+                </p:column>
+                <f:facet name="footer">
+                    <p:commandButton  icon="ui-icon-cart" value="Calculate" action="#{cartManager.calculateCost}" update=":form:table:costLabel"/>
+                    <p:outputLabel id="costLabel"  value="#{cartManager.total}" rendered="#{cartManager.total!=null}"  />
+                    <p:commandButton style="float: right" value="Buy" action="#{cartManager.buyItem()}" update=":form:msgs"/>
+                </f:facet>
+            </p:dataTable>
+        </h:form>
+    </h:body>
+</html>
+

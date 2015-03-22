@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Register to APG webstore</title>
+        <style>
+            .Bimage{background-image:url("resources/raw/gnomes-lol.png");}
+        </style>
+                <link rel="shortcut icon" href="resources/raw/gnome-icon.png" />
+<script src='https://www.google.com/recaptcha/api.js'></script>
+    </h:head>
+    <h:body id="body" styleClass="Bimage">
+        <h:form id="form" style="margin-bottom:50px;padding-right: 150px;padding-left: 150px">
+            <p:growl id="growl" showDetail="true" sticky="true" />
+            <p:panel id="panel" header="Register to APG" style="margin-bottom:10px;;padding-top: 100px">
+                <p:messages id="messages" />
+                <h:panelGrid columns="3" cellpadding="5">
+                    <p:outputLabel for="text1" value="Username:" />
+                    <p:inputText id="text1" value="#{registerManager.username}" required="true" label="Firstname">
+                        <f:validateLength minimum="6" />
+                    </p:inputText>
+                    <p:message for="text1" />
+                    <p:outputLabel for="text2" value="Password:" />
+                    <p:password id="text2" value="#{registerManager.pass}" required="true" label="pass"/>
+                    <p:message for="text2" />
+
+                    <p:outputLabel for="text3" value="Repeat Password:" />
+                    <p:password id="text3" value="#{registerManager.repeatpass}" required="true" label="pass2"/>
+                    <p:message for="text3" />
+
+                    <p:outputLabel for="text4" value="Email:" />
+                    <p:inputText id="text4" value="#{registerManager.email}" required="true" label="email"/>
+                    <p:message for="text4" />
+                    
+                    <p:captcha label="Captcha" />
+                </h:panelGrid>
+            </p:panel>
+            <p:toolbar>
+                <f:facet name="left">
+                    <p:commandButton value="Submit" update="growl" actionListener="#{registerManager.createNewAccount}" style="margin-right:20px;" />
+                </f:facet>
+
+                <f:facet name="right">
+                     <h:outputLink value="index.xhtml" style="margin-right:20px;">Login</h:outputLink>
+                    <p:commandButton value="Reset form" update="panel" process="@this"  style="margin-right:20px;" ><p:resetInput target="panel" />
+                    </p:commandButton>
+                </f:facet>
+                
+            </p:toolbar>
+                       
+        </h:form>
+
+
+    </h:body>
+</html>
